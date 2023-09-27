@@ -11,7 +11,7 @@ local function exploitBan(id, reason)
             2147483647,
             'qb-pawnshop'
         })
-    TriggerEvent('qb-log:server:CreateLog', 'pawnshop', 'Player Banned', 'red',
+    TriggerEvent('qb-log:server:CreateLog', src, 'pawnshop', 'Player Banned', 'red',
         string.format('%s was banned by %s for %s', GetPlayerName(id), 'qb-pawnshop', reason), true)
     DropPlayer(id, 'You were permanently banned by the server for: Exploiting')
 end
@@ -32,9 +32,9 @@ RegisterNetEvent('qb-pawnshop:server:sellPawnItems', function(itemName, itemAmou
     if dist > 5 then exploitBan(src, 'sellPawnItems Exploiting') return end
     if Player.Functions.RemoveItem(itemName, tonumber(itemAmount)) then
         if Config.BankMoney then
-            Player.Functions.AddMoney('bank', totalPrice)
+            Player.Functions.AddMoney('bank', totalPrice, "Pawnshop")
         else
-            Player.Functions.AddMoney('cash', totalPrice)
+            Player.Functions.AddMoney('cash', totalPrice, "Pawnshop")
         end
         TriggerClientEvent('QBCore:Notify', src, Lang:t('success.sold', { value = tonumber(itemAmount), value2 = QBCore.Shared.Items[itemName].label, value3 = totalPrice }),'success')
         TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[itemName], 'remove')
